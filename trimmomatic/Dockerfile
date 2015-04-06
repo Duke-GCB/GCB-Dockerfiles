@@ -1,11 +1,9 @@
 FROM phusion/baseimage
 MAINTAINER Dan Leehr <dan.leehr@duke.edu>
 
-# Install trimmomatic from ...
-# TODO: Where to get trimmomatic
-
 RUN apt-get update && apt-get install -y \
-  openjdk-7-jre-headless
+  openjdk-7-jre-headless \
+  trimmomatic
 
 # Copy wrapper script
 
