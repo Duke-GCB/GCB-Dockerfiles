@@ -32,17 +32,19 @@ set -e
 [ -z "$CONT_PARAM_TRIM_MODE" ] && echo "Error: The CONT_PARAM_TRIM_MODE variable must be set" && exit 1
 
 # Check parameters based on trim mode
-if [ "PE" -eq "$CONT_PARAM_TRIM_MODE" ]
+if [ "PE" = "$CONT_PARAM_TRIM_MODE" ]
 then
   # If PE, need 2 inputs and 4 outputs
-  for VARNAME in CONT_INPUT_FASTQ_READ_1 CONT_INPUT_FASTQ_READ_2 CONT_INPUT_ADAPTERS_FILE do
+  for VARNAME in CONT_INPUT_FASTQ_READ_1 CONT_INPUT_FASTQ_READ_2 CONT_INPUT_ADAPTERS_FILE
+  do
     eval INFILE=\$$VARNAME
     # Check that input variables are set
     [ -z "$INFILE" ] && echo "Error: The $VARNAME variable must be set" && exit 1
     # Check that input files are readable
     [ ! -r "$INFILE" ] && echo "Error: input file $INFILE does not exist or cannot be read" && exit 1
   done
-  for VARNAME in CONT_OUTPUT_PE_TRIMMED_P1 CONT_OUTPUT_PE_TRIMMED_P2 CONT_OUTPUT_PE_TRIMMED_U1 CONT_OUTPUT_PE_TRIMMED_U2 do
+  for VARNAME in CONT_OUTPUT_PE_TRIMMED_P1 CONT_OUTPUT_PE_TRIMMED_P2 CONT_OUTPUT_PE_TRIMMED_U1 CONT_OUTPUT_PE_TRIMMED_U2
+  do
     eval OUTFILE=\$$VARNAME
     # Check that output variables are set
     [ -z "$OUTFILE" ] && echo "Error: The $VARNAME variable must be set" && exit 1
@@ -50,12 +52,13 @@ then
     [ ! -w $(dirname "$OUTFILE" ) ] && echo "Error: output file $OUTFILE is not writable" && exit 1
   done
   TRIMMOMATIC_BIN=`which TrimmomaticPE`
-  $INPUTS="$CONT_INPUT_FASTQ_READ_1 $CONT_INPUT_FASTQ_READ_2"
-  $OUTPUTS="$CONT_OUTPUT_PE_TRIMMED_P1 $CONT_OUTPUT_PE_TRIMMED_P2 $CONT_OUTPUT_PE_TRIMMED_U1 $CONT_OUTPUT_PE_TRIMMED_U2"
-elif [ "SE" -eq "$CONT_PARAM_TRIM_MODE" ]
+  INPUTS="$CONT_INPUT_FASTQ_READ_1 $CONT_INPUT_FASTQ_READ_2"
+  OUTPUTS="$CONT_OUTPUT_PE_TRIMMED_P1 $CONT_OUTPUT_PE_TRIMMED_U1 $CONT_OUTPUT_PE_TRIMMED_P2 $CONT_OUTPUT_PE_TRIMMED_U2"
+elif [ "SE" = "$CONT_PARAM_TRIM_MODE" ]
 then
   # If SE, one input and 1 output
-  for VARNAME in CONT_INPUT_FASTQ_READ_1 CONT_INPUT_ADAPTERS_FILE do
+  for VARNAME in CONT_INPUT_FASTQ_READ_1 CONT_INPUT_ADAPTERS_FILE
+  do
     eval INFILE=\$$VARNAME
     # Check that input variables are set
     [ -z "$INFILE" ] && echo "Error: The $VARNAME variable must be set" && exit 1
@@ -67,8 +70,8 @@ then
   # Check that output directories are writable
   [ ! -w $(dirname "$CONT_OUTPUT_SE_TRIMMED" ) ] && echo "Error: output file $CONT_OUTPUT_SE_TRIMMED is not writable" && exit 1
   TRIMMOMATIC_BIN=`which TrimmomaticSE`
-  $INPUTS=$CONT_INPUT_FASTQ_READ_1
-  $OUTPUTS=$CONT_OUTPUT_SE_TRIMMED
+  INPUTS=$CONT_INPUT_FASTQ_READ_1
+  OUTPUTS=$CONT_OUTPUT_SE_TRIMMED
 else
   echo "Error: Invalid CONT_PARAM_TRIM_MODE: $CONT_PARAM_TRIM_MODE" && exit 1
 fi
