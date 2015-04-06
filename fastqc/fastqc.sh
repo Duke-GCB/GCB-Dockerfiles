@@ -39,5 +39,5 @@ sh -c "$FASTQC_CMD"
 
 # Output files are created in workdir, and are named basename of input file + _fastqc.zip
 INPUT_FILE_NAME=$(basename $CONT_INPUT_FASTQ_FILE)
-ZIPFILE=$WORKDIR/${INPUT_FILE_NAME%.*}_fastqc.zip
+ZIPFILE=$WORKDIR/${INPUT_FILE_NAME%%.*}_fastqc.zip
 mv $ZIPFILE $CONT_OUTPUT_FASTQC_REPORT
