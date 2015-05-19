@@ -1,7 +1,7 @@
 FROM phusion/baseimage
 MAINTAINER Dan Leehr <dan.leehr@duke.edu>
 
-# Install git
+# Install dependencies
 
 RUN apt-get update && apt-get install -y \
   curl \
@@ -18,9 +18,3 @@ RUN mkdir -p $STAR_DIR
 # Download & extract archive - Repo includes binaries for linux
 RUN curl -SL ${STAR_RELEASE_URL}${STAR_VERSION}.tar.gz | tar -xzC $STAR_DIR
 ENV PATH $STAR_DIR/STAR-${STAR_VERSION}/bin/Linux_x86_64/:$PATH
-
-# Copy wrapper script
-
-COPY star.sh /usr/bin/star.sh
-
-CMD ["/usr/bin/star.sh"]

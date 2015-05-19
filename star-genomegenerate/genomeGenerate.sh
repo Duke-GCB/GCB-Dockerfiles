@@ -24,7 +24,7 @@ set -e
 [ -z "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: The CONT_OUTPUT_GENOME_DIR variable must be set" && exit 1
 
 # Check that output directory is writable
-[ ! -w $ "$CONT_OUTPUT_GENOME_DIR") ] && echo "Error: output dir $CONT_OUTPUT_GENOME_DIR is not writable" && exit 1
+[ ! -w $ "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: output dir $CONT_OUTPUT_GENOME_DIR is not writable" && exit 1
 
 # Populate defaults
 THREADS="4"
