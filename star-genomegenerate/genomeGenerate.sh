@@ -20,11 +20,11 @@ set -e
 
 # Check that variables are set
 [ -z "$CONT_INPUT_SJDB_GTF_FILE" ] && echo "Error: The CONT_INPUT_SJDB_GTF_FILE variable must be set" && exit 1
-[ -z "$CONT_INPUT_GENOME_FASTA_FILES" ] && echo "Error: The CONT_INPUT_SJDB_GTF_FILE variable must be set" && exit 1
+[ -z "$CONT_INPUT_GENOME_FASTA_FILES" ] && echo "Error: The CONT_INPUT_GENOME_FASTA_FILES variable must be set" && exit 1
 [ -z "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: The CONT_OUTPUT_GENOME_DIR variable must be set" && exit 1
 
 # Check that output directory is writable
-[ ! -w $ "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: output dir $CONT_OUTPUT_GENOME_DIR is not writable" && exit 1
+[ ! -w "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: output dir $CONT_OUTPUT_GENOME_DIR is not writable" && exit 1
 
 # Populate defaults
 THREADS="4"
@@ -47,7 +47,7 @@ STAR_CMD="$STAR_BIN \
   --sjdbOverhang $SJDB_OVERHANG \
   --genomeDir $CONT_OUTPUT_GENOME_DIR \
   --genomeFastaFiles $CONT_INPUT_GENOME_FASTA_FILES \
-  --runThreadN $THREADS
+  --runThreadN $THREADS"
 
 echo
 echo "Starting $0..."
