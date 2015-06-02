@@ -41,7 +41,7 @@ fi
 # Build command
 STAR_BIN=$(which STAR)
 
-STAR_CMD="$STAR_BIN \
+STAR_CMD="cd $CONT_OUTPUT_GENOME_DIR && $STAR_BIN \
   --runMode genomeGenerate \
   --sjdbGTFfile $CONT_INPUT_SJDB_GTF_FILE \
   --sjdbOverhang $SJDB_OVERHANG \
