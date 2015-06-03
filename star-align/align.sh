@@ -52,7 +52,7 @@ fi
 STAR_BIN=$(which STAR)
 
 STAR_CMD="cd $CONT_OUTPUT_DIR && $STAR_BIN \
-  --outFileNamePrefix $CONT_OUTPUT_DIR \
+  --outFileNamePrefix $CONT_OUTPUT_DIR/ \
   --runThreadN $THREADS \
   --genomeDir $CONT_INPUT_GENOME_DIR \
   --readFilesIn $CONT_INPUT_READ_FILE_1 $CONT_INPUT_READ_FILE_2 \
