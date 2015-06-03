@@ -12,7 +12,8 @@ set -e
 
 # OUTPUTS
 #
-# CONT_OUTPUT_DIR
+# CONT_OUTPUT_WORKDIR
+# CONT_OUTPUT_ALIGNED_FILE - The aligned file
 
 # PARAMS
 #
@@ -26,10 +27,16 @@ set -e
 # Check that variables are set
 [ -z "$CONT_INPUT_GENOME_DIR" ] && echo "Error: The CONT_INPUT_GENOME_DIR variable must be set" && exit 1
 [ -z "$CONT_INPUT_READ_FILE_1" ] && echo "Error: The CONT_INPUT_READ_FILE_1 variable must be set" && exit 1
-[ -z "$CONT_OUTPUT_DIR" ] && echo "Error: The CONT_OUTPUT_DIR variable must be set" && exit 1
+[ -z "$CONT_OUTPUT_WORKDIR" ] && echo "Error: The CONT_OUTPUT_WORKDIR variable must be set" && exit 1
+[ -z "$CONT_OUTPUT_ALIGNED_FILE" ] && echo "Error: CONT_OUTPUT_ALIGNED_FILE variable must be set" && exit 1
+
+# Check that output file does not exist
+[ -e "$CONT_OUTPUT_ALIGNED_FILE" ] && echo "Error: output file at $CONT_OUTPUT_ALIGNED_FILE already exists" && exit 1
 
 # Check that output directory is writable
-[ ! -w "$CONT_OUTPUT_DIR" ] && echo "Error: output dir $CONT_OUTPUT_DIR is not writable" && exit 1
+[ ! -w "$CONT_OUTPUT_WORKDIR" ] && echo "Error: working dir $CONT_OUTPUT_WORKDIR is not writable" && exit 1
+# Check that output file is writable
+[ ! -w $(dirname "$CONT_OUTPUT_ALIGNED_FILE") ] && echo "Error: output file $CONT_OUTPUT_ALIGNED_FILE is not writable" && exit 1
 
 # Populate defaults
 THREADS="4"
@@ -51,8 +58,8 @@ fi
 # Build command
 STAR_BIN=$(which STAR)
 
-STAR_CMD="cd $CONT_OUTPUT_DIR && $STAR_BIN \
-  --outFileNamePrefix $CONT_OUTPUT_DIR/ \
+STAR_CMD="$STAR_BIN \
+  --outFileNamePrefix $CONT_OUTPUT_WORKDIR/ \
   --runThreadN $THREADS \
   --genomeDir $CONT_INPUT_GENOME_DIR \
   --readFilesIn $CONT_INPUT_READ_FILE_1 $CONT_INPUT_READ_FILE_2 \
@@ -65,3 +72,6 @@ echo "$STAR_VERSION"
 echo "Running star:"
 echo "$STAR_CMD"
 sh -c "$STAR_CMD"
+
+# Generates alignment as $CONT_OUTPUT_WORKDIR/Aligned.out.sam
+mv "$CONT_OUTPUT_WORKDIR/Aligned.out.sam" "$CONT_OUTPUT_ALIGNED_FILE"
