@@ -33,16 +33,11 @@ set -e
 
 # Populate defaults
 THREADS="4"
-GENOME_LOAD="LoadAndKeep"
 SAM_ATTRIBUTES="NH HI AS NM MD"
 FILTER_INTRON_MOTIFS="RemoveNoncanonical"
 
 if [ ! -z "$CONT_PARAM_THREADS" ]; then
   THREADS=$CONT_PARAM_THREADS
-fi
-
-if [ ! -z "$CONT_PARAM_GENOME_LOAD" ]; then
-  GENOME_LOAD=$CONT_PARAM_GENOME_LOAD
 fi
 
 if [ ! -z "$CONT_PARAM_SAM_ATTRIBUTES" ]; then
@@ -59,7 +54,6 @@ STAR_BIN=$(which STAR)
 STAR_CMD="cd $CONT_OUTPUT_DIR && $STAR_BIN \
   --outFileNamePrefix $CONT_OUTPUT_DIR \
   --runThreadN $THREADS \
-  --genomeLoad $GENOME_LOAD \
   --genomeDir $CONT_INPUT_GENOME_DIR \
   --readFilesIn $CONT_INPUT_READ_FILE_1 $CONT_INPUT_READ_FILE_2 \
   --outSAMattributes $SAM_ATTRIBUTES \
