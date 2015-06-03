@@ -11,23 +11,26 @@ set -e
 
 # OUTPUTS
 #
-# CONT_OUTPUT_GENOME_DIR
+# CONT_OUTPUT_DIR - output directory for temp files and logs
+# CONT_OUTPUT_GENOME_DIR - directory for generating STAR-formatted genome
 
 # PARAMS
 #
-# CONT_PARAM_THREADS, default 4
+# CONT_PARAM_THREADS, default 32
 # CONT_PARAM_SJDB_OVERHANG, default 25
 
 # Check that variables are set
 [ -z "$CONT_INPUT_SJDB_GTF_FILE" ] && echo "Error: The CONT_INPUT_SJDB_GTF_FILE variable must be set" && exit 1
 [ -z "$CONT_INPUT_GENOME_FASTA_FILES" ] && echo "Error: The CONT_INPUT_GENOME_FASTA_FILES variable must be set" && exit 1
+[ -z "$CONT_OUTPUT_DIR" ] && echo "Error: The CONT_OUTPUT_DIR variable must be set" && exit 1
 [ -z "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: The CONT_OUTPUT_GENOME_DIR variable must be set" && exit 1
 
-# Check that output directory is writable
+# Check that output directories are writable
+[ ! -w "$CONT_OUTPUT_DIR" ] && echo "Error: output dir $CONT_OUTPUT_DIR is not writable" && exit 1
 [ ! -w "$CONT_OUTPUT_GENOME_DIR" ] && echo "Error: output dir $CONT_OUTPUT_GENOME_DIR is not writable" && exit 1
 
 # Populate defaults
-THREADS="4"
+THREADS="32"
 SJDB_OVERHANG="25"
 
 if [ ! -z "$CONT_PARAM_THREADS" ]; then
@@ -41,7 +44,8 @@ fi
 # Build command
 STAR_BIN=$(which STAR)
 
-STAR_CMD="cd $CONT_OUTPUT_GENOME_DIR && $STAR_BIN \
+STAR_CMD="$STAR_BIN \
+  --outFileNamePrefix $CONT_OUTPUT_DIR \
   --runMode genomeGenerate \
   --sjdbGTFfile $CONT_INPUT_SJDB_GTF_FILE \
   --sjdbOverhang $SJDB_OVERHANG \
