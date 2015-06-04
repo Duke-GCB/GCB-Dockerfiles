@@ -46,18 +46,18 @@ if [ ! -z "$CONT_OUTPUT_ALIGNMENT_METRICS_FILE" ]; then
 fi
 # Build command
 BOWTIE2_BIN=$(which bowtie2)
-
+# Get version
+BOWTIE2_VERSION=$($BOWTIE2_BIN --version)
 BOWTIE2_CMD="$BOWTIE2_BIN \
   --threads $THREADS \
   -x $CONT_INPUT_GENOME_INDEX_PREFIX \
   -U $CONT_INPUT_READ_FILE \
   -S $CONT_OUTPUT_ALIGNED_FILE \
-  > $METRICS"
-
-# Get bowtie2 version
+  2> $METRICS"
 
 echo
 echo "Starting $0..."
+echo "$BOWTIE2_VERSION"
 echo "Running bowtie2:"
 echo "$BOWTIE2_CMD"
 sh -c "$BOWTIE2_CMD"
