@@ -16,17 +16,15 @@ import sys
 import os
 
 if len(sys.argv) <= 3:
-        print "usage: python overrepresented_sequence_extract.py sample_name se/pe qc_report_folder default_adapters adapters_out_folder"
+        print "usage: python overrepresented_sequence_extract.py fastqc_data se/pe qc_report_folder default_adapters adapters_out_folder"
         exit(-1)
 
-sample_name = sys.argv[1]
+fastqc_data = sys.argv[1]
 qc_report_folder = sys.argv[2]
 default_adapters = sys.argv[3]
 adapters_out_folder = sys.argv[4]
 
-
-fastqc_data = qc_report_folder + '/' + sample_name + "_fastqc/fastqc_data.txt"
-custom_adapter = adapters_out_folder + '/' + sample_name + "_custom_adapters.fasta"
+custom_adapter = adapters_out_folder + '/custom_adapters.fasta'
 
 overrep_seq_list = []
 rev_comp_list  = []
