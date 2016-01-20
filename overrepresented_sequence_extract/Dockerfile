@@ -8,7 +8,3 @@ RUN pip install -r /src/requirements.txt
 
 RUN chmod +x /src/overrepresented_sequence_extract.py
 ENV PATH /src/:$PATH
-
-# Switch to non-root user
-RUN useradd -m python
-USER python
