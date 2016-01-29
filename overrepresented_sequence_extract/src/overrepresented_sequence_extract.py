@@ -19,12 +19,9 @@ if len(sys.argv) <= 3:
         print "usage: python overrepresented_sequence_extract.py fastqc_data se/pe qc_report_folder default_adapters adapters_out_folder"
         exit(-1)
 
-fastqc_data = sys.argv[1]
-qc_report_folder = sys.argv[2]
-default_adapters = sys.argv[3]
-adapters_out_folder = sys.argv[4]
-
-custom_adapter = adapters_out_folder + '/custom_adapters.fasta'
+fastqc_data = sys.argv[1] # input fastqc_data.txt file
+default_adapters = sys.argv[2] # default_adapters.fasta to read
+custom_adapter = sys.argv[3] # output custom_adapters fasta file
 
 overrep_seq_list = []
 rev_comp_list  = []
