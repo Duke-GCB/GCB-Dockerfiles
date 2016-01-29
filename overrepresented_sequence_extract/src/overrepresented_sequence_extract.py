@@ -15,8 +15,8 @@ from Bio.Alphabet import IUPAC
 import sys
 import os
 
-if len(sys.argv) <= 3:
-        print "usage: python overrepresented_sequence_extract.py fastqc_data se/pe qc_report_folder default_adapters adapters_out_folder"
+if len(sys.argv) < 4:
+        print "usage: python overrepresented_sequence_extract.py fastqc_data default_adapters output_custom_adapters"
         exit(-1)
 
 fastqc_data = sys.argv[1] # input fastqc_data.txt file
