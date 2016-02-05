@@ -3,10 +3,10 @@ MAINTAINER Dan Leehr <dan.leehr@duke.edu>
 
 RUN apt-get update && apt-get install -y \
   openjdk-7-jre-headless \
-  trimmomatic
+  trimmomatic="0.32+dfsg-1"
 
 # Copy wrapper script
 
-COPY trimmomatic.sh /usr/bin/trimmomatic.sh
+ENV PATH=/usr/share/java/:$PATH
 
-CMD ["/usr/bin/trimmomatic.sh"]
+CMD ["trimmomatic.jar"]
