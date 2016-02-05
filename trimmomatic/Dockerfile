@@ -7,6 +7,4 @@ RUN apt-get update && apt-get install -y \
 
 # Copy wrapper script
 
-ENV PATH=/usr/share/java/:$PATH
-
-CMD ["trimmomatic.jar"]
+CMD ["/usr/bin/java", "-jar", "/usr/share/java/trimmomatic.jar"]
