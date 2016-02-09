@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
   libncurses-dev \ 
   zlib1g-dev
 
-# Installs samtools from compiled distribution into /opt/bowtie
+# Installs samtools from sources into /opt/
 ENV SAMTOOLS_RELEASE=1.3
 ENV SAMTOOLS_URL=https://github.com/samtools/samtools/releases/download/
 ENV DEST_DIR=/opt/
