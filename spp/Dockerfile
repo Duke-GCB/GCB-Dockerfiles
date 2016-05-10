@@ -27,11 +27,9 @@ ENV SPP_VERSION=1.13
 
 WORKDIR /usr/local/src/rscripts
 
-COPY . /usr/local/src/rscripts
-RUN chmod +x run_spp.R
-
-# Download and install missing R packages; remove unnecessary files
-RUN Rscript install_Rsamtools.R && \
+# Download and install SPP and auxiliary R packages; remove unnecessary files
+RUN printf 'source("https://bioconductor.org/biocLite.R")\nbiocLite("Rsamtools")\n' > install_Rsamtools.R && \
+    Rscript install_Rsamtools.R && \
     curl -SLo ./spp_${SPP_VERSION}.tar.gz https://github.com/hms-dbmi/spp/archive/${SPP_VERSION}.tar.gz && \
     curl -SLo ./bitops_1.0-6.tar.gz https://cran.r-project.org/src/contrib/bitops_1.0-6.tar.gz && \
     curl -SLo ./caTools_1.17.1.tar.gz https://cran.r-project.org/src/contrib/caTools_1.17.1.tar.gz && \
@@ -40,6 +38,12 @@ RUN Rscript install_Rsamtools.R && \
     R CMD INSTALL spp_${SPP_VERSION}.tar.gz && \
     rm -f ./spp_${SPP_VERSION}.tar.gz ./bitops_1.0-6.tar.gz ./caTools_1.17.1.tar.gz ./install_Rsamtools.R
 
+# Download and install run_spp.R package; remove unnecessary files
+RUN curl -SLo ./run_spp.R.origin https://raw.githubusercontent.com/crazyhottommy/phantompeakqualtools/master/run_spp.R && \
+    printf '#!/usr/bin/env Rscript\n' > ./run_spp.R && \
+    cat ./run_spp.R.origin >> ./run_spp.R && \
+    chmod +x run_spp.R && \
+    rm -f ./run_spp.R.origin
 
 # Add rscripts folder to PATH
 ENV PATH=/usr/local/src/rscripts:$PATH
