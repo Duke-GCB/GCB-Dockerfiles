@@ -1,4 +1,4 @@
-FROM phusion/baseimage:0.9.18
+FROM ubuntu:14.04
 MAINTAINER Alejandro Barrera <alejandro.barrera@duke.edu>
 
 # Install dependencies
