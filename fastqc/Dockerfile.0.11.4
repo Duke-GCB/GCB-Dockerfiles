@@ -1,4 +1,4 @@
-FROM ubuntu:12.04
+FROM ubuntu:16.04
 MAINTAINER Dan Leehr <dan.leehr@duke.edu>
 
 # fastqc requires java
@@ -6,11 +6,12 @@ RUN apt-get update && apt-get install -y \
   curl \
   unzip \
   perl \
-  openjdk-7-jre-headless
+  openjdk-8-jre-headless
 
 # Installs fastqc from compiled java distribution into /opt/FastQC
 ENV FASTQC_URL http://www.bioinformatics.babraham.ac.uk/projects/fastqc/
-ENV FASTQC_RELEASE fastqc_v0.11.4.zip
+ENV FASTQC_VERSION 0.11.4
+ENV FASTQC_RELEASE fastqc_v${FASTQC_VERSION}.zip
 ENV DEST_DIR /opt/
 
 # Make destination directory
