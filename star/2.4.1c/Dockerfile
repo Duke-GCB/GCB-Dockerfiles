@@ -18,3 +18,5 @@ RUN mkdir -p $STAR_DIR
 # Download & extract archive - Repo includes binaries for linux
 RUN curl -SL ${STAR_RELEASE_URL}${STAR_VERSION}.tar.gz | tar -xzC $STAR_DIR
 ENV PATH $STAR_DIR/STAR-${STAR_VERSION}/bin/Linux_x86_64/:$PATH
+
+CMD ["STAR"]
