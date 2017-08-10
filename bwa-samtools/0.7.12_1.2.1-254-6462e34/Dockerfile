@@ -21,7 +21,6 @@ RUN apt-get clean all &&\
 
 ENV VERSIONH 1.2.1-254-6462e34
 ENV NAMEH htslib
-ENV URLH "https://github.com/samtools/htslib/archive/${VERSIONH}.tar.gz"
 ENV SHA1H "6462e349d16e83db8647272e4b98d2a92992071f"
 
 ENV VERSION 1.2-242-4d56437
