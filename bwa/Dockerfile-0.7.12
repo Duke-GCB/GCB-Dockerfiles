@@ -4,9 +4,11 @@ ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /tmp
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+  apt-get install -y \
+  zlib1g-dev \
   build-essential \
-  wget
+  curl
 
 
 ### Install bwa
@@ -15,7 +17,7 @@ ENV VERSION 0.7.12
 ENV NAME bwa
 ENV URL "https://github.com/lh3/bwa/archive/${VERSION}.tar.gz"
 
-RUN wget -q -O - $URL | tar -zxv && \
+RUN curl -SL $URL | tar -zxv && \
     cd ${NAME}-${VERSION} && \
     make -j 4 && \
     cd .. && \
