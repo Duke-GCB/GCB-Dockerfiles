@@ -25,7 +25,6 @@ ENV SHA1H "6462e349d16e83db8647272e4b98d2a92992071f"
 
 ENV VERSION 1.2-242-4d56437
 ENV NAME "samtools"
-ENV URL "https://github.com/samtools/samtools/archive/${VERSION}.tar.gz"
 ENV SHA1 "4d56437320ad370eb0b48c204ccec7c73f653393"
 
 RUN git clone https://github.com/samtools/htslib.git && \
