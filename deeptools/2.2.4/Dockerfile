@@ -1,7 +1,8 @@
 FROM continuumio/miniconda
 MAINTAINER Alejandro Barrera <alejandro.barrera@duke.edu>
 
-RUN conda install -c bioconda deeptools
+ENV DEEPTOOLS_VERSION=2.2.4
+RUN conda install -c bioconda deeptools=${DEEPTOOLS_VERSION}
 
 # Default command to execute at startup of the container
 ENV DEEPTOOLS_SUBCOMMANDS="multiBamSummary multiBigwigSummary correctGCBias bamCoverage bamCompare bigwigCompare computeMatrix plotCorrelation plotPCA plotFingerprint bamPEFragmentSize computeGCBias plotCoverage plotHeatmap plotProfile"
