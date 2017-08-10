@@ -1,4 +1,4 @@
-GGB-Dockerfiles
+GCB-Dockerfiles
 ==========
 
 Docker images for bioinformatic workflows that are built on [dockerhub](https://hub.docker.com/) under the [dukegcb organization](https://hub.docker.com/u/dukegcb/).
@@ -6,9 +6,10 @@ Docker images for bioinformatic workflows that are built on [dockerhub](https://
 ## Source Repository Organization
 
 Each top level directory in the [GCB-Dockerfiles](https://github.com/Duke-GCB/GCB-Dockerfiles/) repository
-corresponds to a `dukegcb/<tool-name>` docker container. Under this directory will be a directory for each version of the software. Inside each subdirectory will be the Dockerfile. This approach was taken to work around a limitations where dockerhub will not let you specify build file (like the command line docker command does).
+corresponds to a `dukegcb/<tool-name>` docker container. Under this directory will be a directory for each version of the software. Inside each subdirectory will be the Dockerfile. The build context occurs in the directory containing the Docker file. 
 
 For example a Dockerfile that builds version 0.11.4 of FastQC would be stored in a file at `fastqc/0.11.4/Dockerfile`.
+The build context in this case is in `fastqc/0.11.4`.
 
 ## Docker Hub Setup
 Each top level directory will have a Automated Build setup with dockerhub.
