@@ -3,7 +3,7 @@ FROM r-base:3.2.4
 RUN apt-get update && apt-get install -y \
   libboost-all-dev \
   curl \
-  build-essential \
+  build-essential=12.2 \
   libncurses-dev \
   zlib1g-dev \
   gawk
