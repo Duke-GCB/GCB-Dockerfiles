@@ -29,4 +29,4 @@ WORKDIR /tmp
 RUN curl -SLO ${TRIM_GALORE_URL}/${TRIM_GALORE_RELEASE} && unzip ${TRIM_GALORE_RELEASE} -d ${DEST_DIR} && rm ${TRIM_GALORE_RELEASE}
 
 # Link executable to /usr/local/bin
-RUN ln -s /src/trim_galore/trim_galore /usr/local/bin/trim_galore
+RUN ln -s /opt/trim_galore /usr/local/bin/trim_galore
