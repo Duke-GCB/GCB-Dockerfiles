@@ -30,3 +30,5 @@ RUN curl -SLO ${TRIM_GALORE_URL}/${TRIM_GALORE_RELEASE} && unzip ${TRIM_GALORE_R
 
 # Link executable to /usr/local/bin
 RUN ln -s /opt/trim_galore /usr/local/bin/trim_galore
+
+CMD ["/usr/local/bin/trim_galore"]
