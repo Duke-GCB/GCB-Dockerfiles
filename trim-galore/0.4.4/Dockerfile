@@ -1,6 +1,6 @@
-# trim_galore: wrapper around cutadapt and fastqc 
+# trim_galore: wrapper around cutadapt and fastqc
 # https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
-FROM dukegcb/fastqc:v0.11.4
+FROM dukegcb/fastqc:0.11.4
 LABEL maintainer="john.bradley@duke.edu"
 
 # install additional requirements
