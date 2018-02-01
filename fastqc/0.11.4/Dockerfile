@@ -24,7 +24,7 @@ WORKDIR /tmp
 RUN curl -SLO ${FASTQC_URL}/${FASTQC_RELEASE} && unzip ${FASTQC_RELEASE} -d ${DEST_DIR} && rm ${FASTQC_RELEASE}
 
 # Make the wrapper script executable
-RUN chmod +x ${DEST_DIR}/FastQC/fastqc
+RUN chmod a+x ${DEST_DIR}/FastQC/fastqc
 
 # Include it in PATH
 ENV PATH ${DEST_DIR}/FastQC:$PATH
