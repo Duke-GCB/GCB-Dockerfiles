@@ -38,11 +38,13 @@ def get_test_list(filename):
 
 
 def start_local_docker_registry():
-    run_bash_cmd("docker run -d -p 5000:5000 --restart=always --name registry registry:2")
+    #run_bash_cmd("docker run -d -p 5000:5000 --restart=always --name registry registry:2")
+    pass
 
 
 def stop_local_docker_registry():
-    run_bash_cmd("docker rm --force registry")
+    #run_bash_cmd("docker rm --force registry")
+    pass
 
 
 def build_and_push_docker_image(imagename, build_path):
