@@ -58,7 +58,7 @@ def run_docker_get_output(imagename, cmd):
 
 def run_singularity_get_output(imagename, cmd):
     singularity_imagename = "docker://{}".format(imagename)
-    singularity_cmd = "singularity exec {} {} 2>&1".format(singularity_imagename, cmd)
+    singularity_cmd = "SINGULARITY_NOHTTPS=yes singularity exec {} {} 2>&1".format(singularity_imagename, cmd)
     singularity_output = run_bash_cmd(singularity_cmd, ignore_non_zero_exit_status=True)
     return singularity_output
 
