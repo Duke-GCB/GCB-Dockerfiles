@@ -1,0 +1,3 @@
+commands:
+  - cmd: "bowtie"
+    expect_text: ".*Usage:.*bowtie.*"
