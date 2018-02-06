@@ -16,6 +16,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Switch to python3
+          command: pyenv local `pyenv versions --bare | grep '^3' | head -n 1`
+      - run:
           name: Install singularity
           command: |
             VERSION=2.4.2
