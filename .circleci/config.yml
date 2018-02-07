@@ -42,7 +42,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r tests/requirements.txt
-            pip install -r tests/devRrequirements.txt
+            pip install -r tests/devRequirements.txt
 
       - save_cache:
           paths:
