@@ -42,6 +42,7 @@ tag_docker_cmd() {
 # 2. a list of relative paths to Dockerfiles (e.g. "fastqc/0.11.4/Dockerfile bwa/0.7.12/Dockerfile",
 # issue a docker build command and tag any versions with a latest symlink
 function build_images() {
+  echo "Building changed Dockerfiles..."; echo
   owner="$1"
   changed_paths="$2"
   for changed_path in $changed_paths; do
@@ -101,8 +102,6 @@ function print_changed() {
   for changed_path in $paths; do
     echo "  $changed_path"
   done
-  echo
-  echo "Building changed Dockerfiles..."
   echo
 }
 
