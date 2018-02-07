@@ -1,0 +1,3 @@
+commands:
+  - cmd: "samtools"
+    expect_text: ".*Usage:.*samtools.*"

@@ -1,0 +1,62 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:latest
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      #- image: circleci/python:3.6.1
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - run:
+          name: Switch to python3
+          command: pyenv local `pyenv versions --bare | grep '^3' | head -n 1`
+      - run:
+          name: Install singularity
+          command: |
+            VERSION=2.4.2
+            wget https://github.com/singularityware/singularity/releases/download/$VERSION/singularity-$VERSION.tar.gz
+            tar xvf singularity-$VERSION.tar.gz
+            cd singularity-$VERSION
+            ./configure --prefix=/usr/local
+            make
+            sudo make install
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v2-dependencies-{{ checksum "requirements.txt" }}
+          # fallback to using the latest cache if no exact match is found
+          - v2-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r tests/requirements.txt
+            pip install -r tests/devRequirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v2-dependencies-{{ checksum "requirements.txt" }}
+
+      # run tests!
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            nosetests
+            python tests/imagecheck.py
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
