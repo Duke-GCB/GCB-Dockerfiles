@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+#
+# requires python3 due to differences in regular expression handling used in unit
 import os
 import sys
 import subprocess
@@ -48,7 +51,7 @@ def stop_local_docker_registry():
 def build_and_push_docker_image(imagename, build_path):
     print("Building docker image for path {}".format(build_path))
     run_bash_cmd("docker build -t {} {}".format(imagename, build_path))
-    run_bash_cmd("docker push {}".format(image_name))
+    run_bash_cmd("docker push {}".format(imagename))
 
 
 def run_docker_get_output(imagename, cmd):
@@ -85,26 +88,26 @@ def print_test_error(cmd, expect_text, cmd_output):
     print("Actual: {}".format(cmd_output))
 
 
-def find_unittest_info(dir_name):
+def find_unittest_info():
     test_info = []
-    for root, dirs, files in os.walk(dir_name):
+    for root, dirs, files in os.walk("."):
         for name in files:
             if name == "unittest.yml":
                 test_directory = root
-                image_name = "localhost:5000/test_{}".format(test_directory.replace("./", "").replace("/", ":").replace("+","_"))
+                imagename = "localhost:5000/test_{}".format(test_directory.replace("./", "").replace("/", ":").replace("+","_"))
                 test_filename = os.path.join(root, name)
-                test_info.append((test_directory, image_name, test_filename))
+                test_info.append((test_directory, imagename, test_filename))
     return test_info
 
 
 if __name__ == "__main__":
-    base_directory = "."
     start_local_docker_registry()
     try:
-        for test_directory, image_name, test_filename in find_unittest_info(base_directory):
-            build_and_push_docker_image(image_name, test_directory)
-            had_error = run_tests(image_name, test_filename)
-            if had_error:
-                sys.exit(1)
+        had_error = False
+        for test_directory, imagename, test_filename in find_unittest_info():
+            build_and_push_docker_image(imagename, test_directory)
+            had_error = run_tests(imagename, test_filename)
+        if had_error:
+            sys.exit(1)
     finally:
         stop_local_docker_registry()
