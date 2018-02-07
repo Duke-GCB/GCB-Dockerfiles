@@ -91,7 +91,7 @@ def find_unittest_info(dir_name):
         for name in files:
             if name == "unittest.yml":
                 test_directory = root
-                image_name = "localhost:5000/test_{}".format(test_directory.replace("./", "").replace("/", ":").replace("+","_")
+                image_name = "localhost:5000/test_{}".format(test_directory.replace("./", "").replace("/", ":").replace("+","_"))
                 test_filename = os.path.join(root, name)
                 test_info.append((test_directory, image_name, test_filename))
     return test_info
