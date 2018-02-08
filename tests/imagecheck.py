@@ -59,7 +59,7 @@ def build_and_push_docker_image(imagename, build_path):
     print("Building docker image for path {}".format(build_path))
     run_bash_cmd("docker build -t {} {}".format(imagename, build_path))
     print("Pushing docker image {}".format(imagename))
-    run_bash_cmd("docker --debug push {}".format(imagename))
+    run_bash_cmd("docker push {}".format(imagename))
 
 
 def run_docker_get_output(imagename, cmd):

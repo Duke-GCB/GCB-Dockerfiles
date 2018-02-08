@@ -47,7 +47,7 @@ class TestRunFunctions(unittest.TestCase):
         imagecheck.build_and_push_docker_image("someimage", "/tmp/somedir")
         mock_run_bash_cmd.assert_has_calls([
             call('docker build -t someimage /tmp/somedir'),
-            call('docker --debug push someimage'),
+            call('docker push someimage'),
         ])
 
     @patch('imagecheck.run_bash_cmd')
