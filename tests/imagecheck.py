@@ -27,6 +27,7 @@ def run_bash_cmd(command, ignore_non_zero_exit_status=False):
         if ignore_non_zero_exit_status:
             return str(exc.output)
         else:
+            print("Error calling process:" + exc.stderr)
             raise
 
 
