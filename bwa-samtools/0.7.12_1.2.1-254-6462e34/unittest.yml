@@ -1,0 +1,5 @@
+commands:
+  - cmd: "bwa"
+    expect_text: ".*Usage:.*bwa.*"
+  - cmd: "samtools"
+    expect_text: ".*Usage:.*samtools.*"

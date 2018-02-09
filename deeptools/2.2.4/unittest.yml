@@ -1,0 +1,7 @@
+commands:
+  - cmd: "multiBamSummary -h"
+    expect_text: ".*usage: multiBamSummary.*"
+  - cmd: "multiBigwigSummary -h"
+    expect_text: ".*usage: multiBigwigSummary.*"
+  - cmd: "correctGCBias -h"
+    expect_text: ".*usage:.*correctGCBias.*"
