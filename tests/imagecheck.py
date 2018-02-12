@@ -55,10 +55,10 @@ def build_docker_image(imagename, build_path):
 
 
 def run_docker_get_output(imagename, cmd, workdir=None, user=None):
-    print("Testing image {} in docker with cmd {}".format(imagename, cmd))
     options = ""
     if workdir:
         options += "--workdir {} ".format(workdir)
+    print("Testing image {} in docker with cmd {} {}".format(imagename, cmd, options))
     if user:
         options += "--user {} ".format(user)
     options += "-it "
