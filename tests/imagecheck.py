@@ -74,7 +74,7 @@ def run_tests(imagename, filename):
             had_error = True
         docker_output_with_options = run_docker_get_output(imagename, cmd, workdir="/tmp", user="ubuntu")
         if not re.match(expect_pattern, docker_output_with_options):
-            print_test_error(cmd + " (with workdir and user options)", expect_text, docker_output)
+            print_test_error(cmd + " (with workdir and user options)", expect_text, docker_output_with_options)
             had_error = True
     return had_error
 
