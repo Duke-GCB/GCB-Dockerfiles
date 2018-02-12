@@ -16,7 +16,7 @@ jobs:
       - deploy:
           name: Deploy Docker Images
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ "${CIRCLE_BRANCH}" == "${DEPLOY_BRANCH}" ]; then
               docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
               ./deploy-ci.sh
             fi
