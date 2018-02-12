@@ -58,6 +58,15 @@ class TestRunFunctions(unittest.TestCase):
             call('docker run -it someimage pwd', ignore_non_zero_exit_status=True),
         ])
 
+    @patch('imagecheck.run_bash_cmd')
+    def test_run_docker_get_output_with_options(self, mock_run_bash_cmd):
+        mock_run_bash_cmd.return_value = "/tmp/somedir"
+        result = imagecheck.run_docker_get_output("someimage", "pwd", "/work", "ubuntu")
+        self.assertEqual(result, "/tmp/somedir")
+        mock_run_bash_cmd.assert_has_calls([
+            call('docker run --workdir /work --user ubuntu -it someimage pwd', ignore_non_zero_exit_status=True),
+        ])
+
     @patch('imagecheck.get_test_list')
     @patch('imagecheck.run_docker_get_output')
     @patch('imagecheck.print_test_error')
