@@ -28,7 +28,7 @@ check_deploy_branch
 # Get the range of commits to compare for detecting changed files
 compare_range=$(get_compare_range)
 # Get a list of changed paths in the repo to look for <tool>/<version>/Dockerfile
-paths=$(changed_paths_in_range $compare_range)
+paths=$(changed_paths_in_range "$compare_range")
 # Print out what changes are being considered
 print_changed "$compare_range" "$paths"
 # Loop through the changed files and build Docker images for any that match
