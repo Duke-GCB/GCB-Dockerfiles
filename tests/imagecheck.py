@@ -12,6 +12,8 @@ import yaml
 import re
 
 UNITTEST_FILENAME = "unittest.yml"
+TEST_WORKDIR = "/tmp"
+TEST_USER = "nobody"
 
 
 def run_bash_cmd(command, ignore_non_zero_exit_status=False):
@@ -72,7 +74,7 @@ def run_tests(imagename, filename):
         if not re.match(expect_pattern, docker_output):
             print_test_error(cmd, expect_text, docker_output)
             had_error = True
-        docker_output_with_options = run_docker_get_output(imagename, cmd, workdir="/tmp", user="ubuntu")
+        docker_output_with_options = run_docker_get_output(imagename, cmd, workdir=TEST_WORKDIR, user=TEST_USER)
         if not re.match(expect_pattern, docker_output_with_options):
             print_test_error(cmd + " (with workdir and user options)", expect_text, docker_output_with_options)
             had_error = True
@@ -120,6 +122,8 @@ def get_unittest_file_paths(path_list):
 
 def find_and_run_tests(owner, changed_paths):
     had_errors = False
+    tested_images = 0
+    images_with_errors = 0
     for unittest_path in get_unittest_file_paths(changed_paths):
         parts = unittest_path.split(sep="/")
         if len(parts):
@@ -127,10 +131,13 @@ def find_and_run_tests(owner, changed_paths):
             imagename = "{}/{}:{}".format(owner, tool, tag).replace("+","_")
             build_docker_image(imagename, "{}/{}".format(tool, tag))
             had_error = run_tests(imagename, unittest_path)
+            tested_images += 1
             if had_error:
+                images_with_errors += 1
                 had_errors = True
         else:
             print("Skipping {}".format(unittest_path))
+    print("Tested {} images. Images with errors: {}".format(tested_images, images_with_errors))
     return had_errors
 
 
