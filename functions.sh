@@ -13,7 +13,8 @@ function get_num_parents() {
 # Given a range, produce the list of file paths changed
 function changed_paths_in_range() {
   compare_range=$1
-  git diff --name-only $compare_range
+  # diff-filter=d excludes deleted files
+  git diff --name-only --diff-filter=d $compare_range
 }
 
 # Check if DEPLOY_BRANCH is set and current branch can be tested
