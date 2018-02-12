@@ -67,7 +67,7 @@ def run_docker_get_output(imagename, cmd, workdir=None, user=None):
 def run_tests(imagename, filename):
     had_error = False
     for cmd, expect_text in get_test_list(filename):
-        expect_pattern = re.compile(expect_text, re.MULTILINE)
+        expect_pattern = re.compile(expect_text, re.DOTALL)
         docker_output = run_docker_get_output(imagename, cmd)
         if not re.match(expect_pattern, docker_output):
             print_test_error(cmd, expect_text, docker_output)
