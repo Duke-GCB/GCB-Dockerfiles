@@ -86,7 +86,7 @@ function tag_docker_cmd() {
   tool=$2
   src=$3
   tag=$4
-  echo "docker tag $owner/$tool:$version $owner/$tool:$tag"
+  echo "docker tag $owner/$tool:$src $owner/$tool:$tag"
 }
 
 # Given a docker repo owner, image name, and version, produce a command that returns the image id if it exists locally
@@ -141,6 +141,7 @@ function build_images() {
     IFS='/' read -r -a f <<< "$changed_path"
     tool="${f[0]}"
     version="${f[1]}"
+    filename="${f[2]}"
     if [[ -L "$changed_path" && "$filename" == "" && "$version" == "latest" ]]; then
       attempted_build="1"
       # The changed file is a symlink called latest, e.g. "fastqc/latest"
@@ -189,6 +190,7 @@ function push_images() {
     IFS='/' read -r -a f <<< "$changed_path"
     tool="${f[0]}"
     version="${f[1]}"
+    filename="${f[2]}"
     if [[ -L "$changed_path" && "$filename" == "" && "$version" == "latest" ]]; then
       attempted_push="1"
       # The changed file is a symlink called latest, e.g. "fastqc/latest"
