@@ -1,4 +1,3 @@
 commands:
   - cmd: "java -jar /opt/picard/picard.jar BedToIntervalList -h"
     expect_text: ".*USAGE: BedToIntervalList.*"
-

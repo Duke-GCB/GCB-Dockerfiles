@@ -1,4 +1,3 @@
 commands:
   - cmd: "run_spp.R"
     expect_text: ".*Usage: Rscript run_spp.R.*"
-

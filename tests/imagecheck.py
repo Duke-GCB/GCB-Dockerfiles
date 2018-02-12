@@ -69,9 +69,12 @@ def run_tests(imagename, filename):
     for cmd, expect_text in get_test_list(filename):
         expect_pattern = re.compile(expect_text, re.MULTILINE)
         docker_output = run_docker_get_output(imagename, cmd)
-        docker_output_with_options = run_docker_get_output(imagename, cmd, workdir="/tmp", user="ubuntu")
         if not re.match(expect_pattern, docker_output):
             print_test_error(cmd, expect_text, docker_output)
+            had_error = True
+        docker_output_with_options = run_docker_get_output(imagename, cmd, workdir="/tmp", user="ubuntu")
+        if not re.match(expect_pattern, docker_output_with_options):
+            print_test_error(cmd + " (with workdir and user options)", expect_text, docker_output)
             had_error = True
     return had_error
 
