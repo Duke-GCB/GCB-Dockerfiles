@@ -1,3 +1,4 @@
 commands:
   - cmd: "macs2"
     expect_text: ".*usage: macs2.*"
+

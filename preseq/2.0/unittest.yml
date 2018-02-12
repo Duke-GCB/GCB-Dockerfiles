@@ -1,3 +1,4 @@
 commands:
   - cmd: "preseq"
     expect_text: ".*Usage:.*preseq.*"
+

@@ -1,3 +1,4 @@
 commands:
   - cmd: "fastqc -h"
     expect_text: ".*fastqc seqfile1 seqfile2.*"
+

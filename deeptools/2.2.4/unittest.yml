@@ -5,3 +5,4 @@ commands:
     expect_text: ".*usage: multiBigwigSummary.*"
   - cmd: "correctGCBias -h"
     expect_text: ".*usage:.*correctGCBias.*"
+

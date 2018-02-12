@@ -1,3 +1,4 @@
 commands:
   - cmd: "trim_galore --help"
     expect_text: ".*USAGE:.*trim_galore.*"
+
