@@ -1,15 +1,57 @@
 #!/bin/bash
 
-# This build needs to determine what files changed in the most recent commit.
-# git diff-tree does not show file name changes for merge commits
-function last_nonmerge_commit_sha() {
-  git log --no-merges -n 1 --format="%H"
+function current_branch_name() {
+  git rev-parse --abbrev-ref HEAD
 }
 
-# Given an SHA1 hash, produce the list of file paths changed in that commit
-function changed_paths_in_commit() {
+function get_num_parents() {
   sha=$1
-  git diff-tree --no-commit-id --name-only -r $sha
+  parents=$(git cat-file -p $sha | grep parent | wc -l)
+  echo $parents
+}
+
+# Given a range, produce the list of file paths changed
+function changed_paths_in_range() {
+  compare_range=$1
+  git diff --name-only $compare_range
+}
+
+# Check if DEPLOY_BRANCH is set and current branch can be tested
+function check_deploy_branch() {
+  if [[ "$DEPLOY_BRANCH" == "" ]]; then
+    echo "Error: DEPLOY_BRANCH is empty"
+    echo "Please ensure DEPLOY_BRANCH is set to the name of the git branch that should be considered for deploying, typically 'master'";
+    exit 1;
+  else
+    echo "Using Deploy branch org as $DEPLOY_BRANCH..."
+  fi
+  current_branch=$(current_branch_name)
+  if [[ "$current_branch" == "$DEPLOY_BRANCH" ]]; then
+    # Current branch is the deploy branch, we must have a merge commit to test/build
+    num_parents=$(get_num_parents "HEAD")
+    if [[ "$num_parents" -lt "2" ]]; then
+      echo "Error: Current branch is the deploy branch ($DEPLOY_BRANCH), but HEAD is not a merge commit. Build failed." && exit 1
+    fi
+  fi
+}
+
+# If the current branch is the deploy branch, return a range representing
+# the two parents of the HEAD's merge commit. If not, return a range comparing
+# the current HEAD with the deploy_branch
+function get_compare_range() {
+  current_branch=$(current_branch_name)
+  if [[ "$current_branch" == "$DEPLOY_BRANCH" ]]; then
+      # On the deploy branch (e.g. master)
+      # check_deploy_branch should have verified it is a merge commit
+      range_start="HEAD^1" # alias for first parent
+      range_end="HEAD^2" # alias for second parent
+  else
+    # Not on the deploy branch (e.g. master)
+    # When not on the deploy branch, always compare with the deploy branch
+    range_start="$DEPLOY_BRANCH"
+    range_end="HEAD"
+  fi
+  echo "$range_start $range_end"
 }
 
 # Given a docker repo owner, image name, and version, produce a local docker build command
@@ -160,9 +202,9 @@ function push_images() {
 }
 
 function print_changed() {
-  sha="$1"
+  range="$1"
   paths="$2"
-  echo "Changed files in $sha:"
+  echo "Changed files in ($range)"
   echo
   for changed_path in $paths; do
     echo "  $changed_path"
