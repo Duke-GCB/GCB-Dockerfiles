@@ -24,7 +24,7 @@ function check_deploy_branch() {
     echo "Please ensure DEPLOY_BRANCH is set to the name of the git branch that should be considered for deploying, typically 'master'";
     exit 1;
   else
-    echo "Using Deploy branch org as $DEPLOY_BRANCH..."
+    echo "Using Deploy branch as $DEPLOY_BRANCH..."
   fi
   current_branch=$(current_branch_name)
   if [[ "$current_branch" == "$DEPLOY_BRANCH" ]]; then
