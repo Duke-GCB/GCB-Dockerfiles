@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-# Recursively looks for files in current directory.
-# For each unittest.yml found
-#   1) builds a docker image in the directory containing unittest.yml
-#   2) runs tests specified in unittest.yml inside the docker image using docker
-#   3) runs tests specified in unittest.yml inside the docker image using singularity
+# Receives docker owner and a list of changed files on the command line
+# For a changed file isunittest.yml or Dockerfile
+#   1) builds a docker image in the directory containing unittest.yml ( building Dockerfile )
+#   2) runs tests specified in unittest.yml inside the docker image
+#      a) with default docker settings
+#      a) with WORKDIR and USER settings to check for singularity compatibility
+# If both unittest.yml and Dockerfile are changed it only tests the image once
 
 import os
 import sys
@@ -55,6 +57,14 @@ def build_docker_image(imagename, build_path):
 
 
 def run_docker_get_output(imagename, cmd, workdir=None, user=None):
+    """
+    Launch docker process with run command passing the cmd.
+    :param imagename: str: name of the image to run
+    :param cmd: str: commmand to run inside the image
+    :param workdir: str: optional flag to run in a particular directory
+    :param user: str: optional flag to run as a particular user
+    :return: str: output of the docker process
+    """
     options = ""
     if workdir:
         options += "--workdir {} ".format(workdir)
@@ -66,9 +76,15 @@ def run_docker_get_output(imagename, cmd, workdir=None, user=None):
     return run_bash_cmd(docker_cmd, ignore_non_zero_exit_status=True)
 
 
-def run_tests(imagename, filename):
+def run_tests(imagename, unittest_filepath):
+    """
+    Run all tests contained in a unittest_filename against imagename
+    :param imagename: str: name of the image to test
+    :param unittest_filepath: str path to unittest.yml file
+    :return: bool: true if we had an error
+    """
     had_error = False
-    for cmd, expect_text in get_test_list(filename):
+    for cmd, expect_text in get_test_list(unittest_filepath):
         expect_pattern = re.compile(expect_text, re.DOTALL)
         docker_output = run_docker_get_output(imagename, cmd)
         if not re.match(expect_pattern, docker_output):
@@ -104,14 +120,28 @@ def find_unittest_info():
 
 
 def get_test_file_path(file_path):
+    """
+    Given a file path return a path to the associated unittest.yml file.
+    This is either the file_path itself if it points to unittest.yml or if a Dockerfile it will
+    point to the unittest.yml file(if it exists)
+    :param file_path: str: path to a changed file that may have an associated unittest.yml file
+    :return: str: a path to a unittest.yml file to test or None if there is no associated test file
+    """
     filename = os.path.basename(file_path)
     if filename in ["Dockerfile", UNITTEST_FILENAME]:
         parent_directory = os.path.dirname(file_path)
-        return "{}/{}".format(parent_directory, UNITTEST_FILENAME)
+        unittest_filepath = "{}/{}".format(parent_directory, UNITTEST_FILENAME)
+        if os.path.exists(unittest_filepath):
+            return unittest_filepath
     return None
 
 
 def get_unittest_file_paths(path_list):
+    """
+    For a list of paths return any associated unittest.yml files.
+    :param path_list: [str]: list of paths
+    :return: [str]: list of unitttest.yml paths
+    """
     unittest_paths = set()
     for file_path in path_list:
         unittest_path = get_test_file_path(file_path)
@@ -121,6 +151,12 @@ def get_unittest_file_paths(path_list):
 
 
 def find_and_run_tests(owner, changed_paths):
+    """
+    Find an run tests based on a docker ownername (used to build image name) and a list of paths
+    :param owner: str: prefix of docker imagename
+    :param changed_paths: [str]: list of paths that were changed and may need to be tested
+    :return: bool: true when we had errors
+    """
     had_errors = False
     tested_images = 0
     images_with_errors = 0
