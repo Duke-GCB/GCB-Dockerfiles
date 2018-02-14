@@ -97,22 +97,6 @@ def print_test_error(cmd, expect_text, cmd_output):
     print("Actual: {}".format(cmd_output))
 
 
-def find_unittest_info():
-    """
-    Recursively walk the current directory looking for tests.
-    :return: [(test_dir, imagename, test_filename)]: list of testing data tuples
-    """
-    test_info = []
-    for root, dirs, files in os.walk("."):
-        for name in files:
-            if name == UNITTEST_FILENAME:
-                test_directory = root
-                imagename = "localhost:5000/test_{}".format(test_directory.replace("./", "").replace("/", ":").replace("+","_"))
-                test_filename = os.path.join(root, name)
-                test_info.append((test_directory, imagename, test_filename))
-    return test_info
-
-
 def get_test_file_path(file_path):
     """
     Given a file path return a path to the associated unittest.yml file.

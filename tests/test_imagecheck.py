@@ -86,16 +86,3 @@ class TestRunFunctions(unittest.TestCase):
             call('bwa', '.*Usage: bwa.*', 'Error: no such file')
         ])
         self.assertEqual(had_error, True)
-
-    @patch('imagecheck.os.walk')
-    def test_find_unittest_info(self, mock_walk):
-        mock_walk.return_value = [
-            ("./bwa/123", [], ["Dockerfile", "unittest.yml"])
-        ]
-        test_info = imagecheck.find_unittest_info()
-        self.assertEqual(test_info, [
-            (
-                './bwa/123',  # directory to run test in
-                'localhost:5000/test_bwa:123',  # test imagename that specifies the local docker registry
-                './bwa/123/unittest.yml'  # file that contains the test info
-            )])
