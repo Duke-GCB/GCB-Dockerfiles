@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # Receives docker owner and a list of changed files on the command line
 # For a changed file isunittest.yml or Dockerfile
-#   1) builds a docker image in the directory containing unittest.yml ( building Dockerfile )
-#   2) runs tests specified in unittest.yml inside the docker image
+#   1) runs tests specified in unittest.yml inside the docker image (assumes images have already been built)
 #      a) with default docker settings
 #      a) with WORKDIR and USER settings to check for singularity compatibility
 # If both unittest.yml and Dockerfile are changed it only tests the image once
@@ -49,11 +48,6 @@ def get_test_list(filename):
             expect_text = testinfo['expect_text']
             testinfo_list.append((cmd, expect_text))
         return testinfo_list
-
-
-def build_docker_image(imagename, build_path):
-    print("Building docker image for path {}".format(build_path))
-    run_bash_cmd("docker build -t {} {}".format(imagename, build_path))
 
 
 def run_docker_get_output(imagename, cmd, workdir=None, user=None):
@@ -165,7 +159,6 @@ def find_and_run_tests(owner, changed_paths):
         if len(parts):
             tool, tag, _ = parts
             imagename = "{}/{}:{}".format(owner, tool, tag).replace("+","_")
-            build_docker_image(imagename, "{}/{}".format(tool, tag))
             had_error = run_tests(imagename, unittest_path)
             tested_images += 1
             if had_error:

@@ -43,13 +43,6 @@ class TestRunFunctions(unittest.TestCase):
             self.assertEqual(testinfo_list[1], ("samtools", ".*Usage:.*samtools.*"))
 
     @patch('imagecheck.run_bash_cmd')
-    def test_build_docker_image(self, mock_run_bash_cmd):
-        imagecheck.build_docker_image("someimage", "/tmp/somedir")
-        mock_run_bash_cmd.assert_has_calls([
-            call('docker build -t someimage /tmp/somedir'),
-        ])
-
-    @patch('imagecheck.run_bash_cmd')
     def test_run_docker_get_output(self, mock_run_bash_cmd):
         mock_run_bash_cmd.return_value = "/tmp/somedir"
         result = imagecheck.run_docker_get_output("someimage", "pwd")
