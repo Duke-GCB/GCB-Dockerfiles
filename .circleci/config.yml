@@ -3,16 +3,27 @@ version: 2
 jobs:
   build:
     docker:
-      - image: docker:17.05.0-ce-git
+      # provides python3/bash/docker for build/deploying/testing images
+      - image: circleci/python:3.6.1
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Install bash
-          command: apk add --no-cache bash
+          name: Install python requirements
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r tests/requirements.txt
+            pip install -r tests/devRequirements.txt
       - run:
           name: Build Docker Images
           command: ./build-ci.sh
+      - run:
+          name: Run python code that tests the Docker Images
+          command: |
+            . venv/bin/activate
+            nosetests
+            ./test-ci.sh
       - deploy:
           name: Deploy Docker Images
           command: |
