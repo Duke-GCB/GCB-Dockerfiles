@@ -3,6 +3,7 @@ version: 2
 jobs:
   build:
     docker:
+      # provides python3/bash/docker for build/deploying/testing images
       - image: circleci/python:3.6.1
     steps:
       - checkout
