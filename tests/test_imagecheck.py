@@ -48,7 +48,7 @@ class TestRunFunctions(unittest.TestCase):
         result = imagecheck.run_docker_get_output("someimage", "pwd")
         self.assertEqual(result, "/tmp/somedir")
         mock_run_bash_cmd.assert_has_calls([
-            call('docker run -it someimage pwd', ignore_non_zero_exit_status=True),
+            call('docker run -it --rm someimage pwd', ignore_non_zero_exit_status=True),
         ])
 
     @patch('imagecheck.run_bash_cmd')
@@ -57,7 +57,7 @@ class TestRunFunctions(unittest.TestCase):
         result = imagecheck.run_docker_get_output("someimage", "pwd", "/work", "ubuntu")
         self.assertEqual(result, "/tmp/somedir")
         mock_run_bash_cmd.assert_has_calls([
-            call('docker run --workdir /work --user ubuntu -it someimage pwd', ignore_non_zero_exit_status=True),
+            call('docker run --workdir /work --user ubuntu -it --rm someimage pwd', ignore_non_zero_exit_status=True),
         ])
 
     @patch('imagecheck.get_test_list')
