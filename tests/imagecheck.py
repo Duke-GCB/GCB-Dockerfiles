@@ -155,12 +155,12 @@ def find_and_run_tests(owner, changed_paths):
 
 
 def main():
-    if len(sys.argv) < 3:
-        print("Usage python3 tests/imagecheck.py <docker_owner> <unittest_or_dockerfile_path>...")
+    if len(sys.argv) < 2:
+        print("Usage python3 tests/imagecheck.py <docker_owner> [<unittest_or_dockerfile_path>...]")
         sys.exit(1)
     else:
         owner = sys.argv[1]
-        changed_paths = sys.argv[2:]
+        changed_paths = sys.argv[2:] if len(sys.argv) > 2 else []
         had_errors = find_and_run_tests(owner, changed_paths)
         if had_errors:
             sys.exit(2)
