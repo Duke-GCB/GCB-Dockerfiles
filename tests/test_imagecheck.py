@@ -86,3 +86,40 @@ class TestRunFunctions(unittest.TestCase):
             call('bwa', '.*Usage: bwa.*', 'Error: no such file')
         ])
         self.assertEqual(had_error, True)
+
+@patch('imagecheck.sys')
+@patch('imagecheck.find_and_run_tests')
+class TestMain(unittest.TestCase):
+
+    def test_exits_1_without_enough_args(self, mock_run, mock_sys):
+        mock_sys.argv = ['imagecheck.py']
+        imagecheck.main()
+        mock_sys.exit.assert_has_calls([call(1),])
+        self.assertFalse(mock_run.called)
+
+    def test_exits_2_if_failure(self, mock_run, mock_sys):
+        mock_sys.argv = ['imagecheck.py', 'dockerorg']
+        mock_run.return_value = True
+        imagecheck.main()
+        mock_sys.exit.assert_has_calls([call(2),])
+        self.assertTrue(mock_run.called)
+
+    def test_calls_find_and_run_without_changed_files(self, mock_run, mock_sys):
+        mock_sys.argv = ['imagecheck.py', 'dockerorg']
+        mock_run.return_value = False
+        imagecheck.main()
+        self.assertFalse(mock_sys.exit.called)
+        self.assertTrue(mock_run.called)
+        mock_run.assert_has_calls([
+            call('dockerorg', [])
+        ])
+
+    def test_calls_find_and_run_with_changed_files(self, mock_run, mock_sys):
+        mock_sys.argv = ['imagecheck.py', 'dockerorg', 'path1', 'path2']
+        mock_run.return_value = False
+        imagecheck.main()
+        self.assertFalse(mock_sys.exit.called)
+        self.assertTrue(mock_run.called)
+        mock_run.assert_has_calls([
+            call('dockerorg', ['path1','path2'])
+        ])
