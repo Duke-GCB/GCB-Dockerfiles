@@ -1,0 +1,3 @@
+commands:
+  - cmd: "SeekDeep"
+    expect_text: ".*Use SeekDeep.*"
