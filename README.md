@@ -57,7 +57,9 @@ These processes happen on [CircleCI](https://circleci.com/gh/Duke-GCB/GCB-Docker
 
 ### Docker Hub Credentials
 
-To push to Docker Hub, the client must login with `docker login`. Docker Hub suggests using a dedicated build account and granting it access to your organization, so we have adopted that convention here, creating a dedicated user and a **cibuild** team.
+For the CI service to push to Docker Hub, it must login with `docker login`. It uses the username/password set in the above variables.
+
+To avoid using personal account credentials, we use a Docker Hub account created just for this purpose. This account is a member of the **cibuild** team, which has write access to the docker repos.
 
 ### Testing
 
