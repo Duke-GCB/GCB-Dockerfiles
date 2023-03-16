@@ -104,3 +104,4 @@ So this build command can easily be run locally to confirm the image builds corr
 8. CircleCI will build and test changed `Dockerfile`s from your branch, but images will not be pushed to Docker Hub.
 9. Submit a pull request to merge those changes into `master`
 10. After review and merge to `master`, the newly built image(s) will be pushed to Docker Hub.
+    - Note that the pull request _must_ result in a merge commit, due to the logic (see `functions.sh`) for determining changed Docker files. This is why squash and rebase merging of pull requests are disabled. 
